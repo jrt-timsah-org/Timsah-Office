@@ -2,6 +2,8 @@
 
 ローカルで使う日本語AIワークスペース。Notionのようにメモをページで整理し、**Timsah-Assitant** に要約・文章整理・TODO抽出・CoRE-2ルール調査を頼めます。公式ルールの検索、AIハーネス、llama.cpp、専用Web UIを .NET 10 のアプリにまとめています。
 
+![Timsah-OfficeのノートとAI画面](docs/images/workspace.jpg)
+
 ## ダウンロードと起動
 
 [Releases](https://github.com/jrt-timsah-org/Timsah-Office/releases) の自分のOSに合う **offline** パッケージを展開し、起動ファイルを実行してください。**.NET 10 / ASP.NET Runtime、llama.cpp、Qwen3 0.6B、公式ルールのスナップショットを同梱**。SDK・Python・Node・クラウドAPIキーは不要です。初回からオフラインでメモ・検索・推論を使えます。
