@@ -26,5 +26,5 @@ assert events[0]['type']=='loading',events
 assert events[-1]['type']=='done',events
 status=get();assert status['engine']['state']=='ready';assert status['engine']['processId']!=pid
 assert 'Timsah-Assitant' in ''.join(e['data'] for e in events if e['type']=='delta')
-pathlib.Path('artifacts/idle-smoke.json').write_text(json.dumps({'oldPid':pid,'newPid':status['engine']['processId'],'memoryAfterReload':status['engine']['workingSetBytes'],'events':events},ensure_ascii=False,indent=2))
+pathlib.Path('artifacts/idle-smoke.json').write_text(json.dumps({'oldPid':pid,'newPid':status['engine']['processId'],'memoryAfterReload':status['engine']['workingSetBytes'],'events':events},ensure_ascii=False,indent=2),encoding="utf-8")
 print('PASSED automatic unload and on-demand reload',flush=True)

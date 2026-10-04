@@ -10,7 +10,7 @@ string? Option(string name) { var i = Array.IndexOf(args, name); return i >= 0 &
 var bundle = Option("--bundle") ?? AppContext.BaseDirectory;
 var paths = new OfficePaths(bundle, Option("--data"));
 using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(30) };
-http.DefaultRequestHeaders.UserAgent.ParseAdd("Timsah-Office/0.1.0");
+http.DefaultRequestHeaders.UserAgent.ParseAdd("Timsah-Office/0.1.1");
 if (args.Contains("--refresh-rules"))
 {
     var corpus = await RuleImporter.DownloadAsync(http);
@@ -18,7 +18,7 @@ if (args.Contains("--refresh-rules"))
     Console.WriteLine($"Validated {corpus.Sections.Length} sections: " + string.Join(", ", corpus.Sources.Select(s => s.Version)));
     return;
 }
-if (args.Contains("--version")) { Console.WriteLine("Timsah-Office 0.1.0 / .NET " + Environment.Version); return; }
+if (args.Contains("--version")) { Console.WriteLine("Timsah-Office 0.1.1 / .NET " + Environment.Version); return; }
 using var instance = new FileStream(Path.Combine(paths.UserData, "instance.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
 var catalog = JsonStorage.Read<AssetCatalog>(paths.Catalog);
 var state = new OfficeState(paths, catalog);

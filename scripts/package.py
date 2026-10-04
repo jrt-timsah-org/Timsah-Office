@@ -19,8 +19,8 @@ def fetch(asset, target):
     finally: temp.unlink(missing_ok=True)
 
 def main():
-    parser = argparse.ArgumentParser(); parser.add_argument('--rid', required=True); parser.add_argument('--version', default='0.1.0'); parser.add_argument('--with-model', action='store_true'); args = parser.parse_args()
-    catalog = json.loads((ROOT/'config/catalog.json').read_text()); asset = catalog['engines'][args.rid]
+    parser = argparse.ArgumentParser(); parser.add_argument('--rid', required=True); parser.add_argument('--version', default='0.1.1'); parser.add_argument('--with-model', action='store_true'); args = parser.parse_args()
+    catalog = json.loads((ROOT/'config/catalog.json').read_text(encoding='utf-8')); asset = catalog['engines'][args.rid]
     out = ROOT/'artifacts'/('publish-'+args.rid)
     if out.exists(): shutil.rmtree(out)
     subprocess.run(['dotnet','publish',str(ROOT/'src/TimsahOffice.App'),'-c','Release','-r',args.rid,'--self-contained','true','-p:PublishSingleFile=false','-o',str(out)], check=True, cwd=ROOT)

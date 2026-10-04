@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Headless live checks against a running Timsah-Office. Uses real llama.cpp when --inference is given."""
-import argparse,json,pathlib,time,urllib.request,urllib.error
+import argparse,json,pathlib,time,urllib.request,urllib.error,sys
+sys.stdout.reconfigure(encoding="utf-8")
 parser=argparse.ArgumentParser();parser.add_argument('--url',default='http://127.0.0.1:5273');parser.add_argument('--inference',action='store_true');parser.add_argument('--output',default='artifacts/smoke-results.json');args=parser.parse_args()
 base=args.url+'/api/';token=json.load(urllib.request.urlopen(base+'session'))['token']
 def request(path,method='GET',data=None,headers=None):
@@ -45,4 +46,4 @@ if args.inference:
         print(label,round(time.monotonic()-start,2),answer,flush=True)
     results['checks'].append('real inference identity rules and note assistance')
 request('notes/'+page['id']+'?revision='+str(page['revision']),'DELETE')
-out=pathlib.Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(results,ensure_ascii=False,indent=2));print('PASSED',results['checks'],flush=True)
+out=pathlib.Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding="utf-8");print('PASSED',results['checks'],flush=True)

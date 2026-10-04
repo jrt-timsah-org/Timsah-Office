@@ -5,6 +5,8 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+env:
+  PYTHONUTF8: '1'
 permissions:
   contents: read
 jobs:
@@ -35,7 +37,7 @@ jobs:
       - name: Publish and package
         shell: bash
         run: |
-          version=0.1.0-dev
+          version=0.1.1-dev
           model_flag=""
           if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then version="${GITHUB_REF_NAME#v}"; model_flag="--with-model"; fi
           python scripts/package.py --rid '${{ matrix.rid }}' --version "$version" $model_flag
