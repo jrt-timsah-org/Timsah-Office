@@ -1,0 +1,94 @@
+name: Build, test and release
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            rid: linux-x64
+          - os: windows-2025
+            rid: win-x64
+          - os: macos-15
+            rid: osx-arm64
+          - os: macos-15-intel
+            rid: osx-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: dotnet restore TimsahOffice.slnx --locked-mode
+      - run: dotnet test TimsahOffice.slnx -c Release --no-restore --logger trx --results-directory artifacts/tests
+      - name: Publish and package
+        shell: bash
+        run: |
+          version=0.1.0-dev
+          model_flag=""
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then version="${GITHUB_REF_NAME#v}"; model_flag="--with-model"; fi
+          python scripts/package.py --rid '${{ matrix.rid }}' --version "$version" $model_flag
+      - name: Native engine and self-contained runtime
+        shell: bash
+        run: |
+          app_binary="artifacts/publish-${{ matrix.rid }}/Timsah-Office"
+          if [[ '${{ runner.os }}' == 'Windows' ]]; then app_binary="${app_binary}.exe"; fi
+          "$app_binary" --version
+          binary=$(find 'artifacts/publish-${{ matrix.rid }}/engine' -type f \( -name llama-server -o -name llama-server.exe \) | head -1)
+          "$binary" --version
+      - name: Local API smoke
+        shell: python
+        run: |
+          import pathlib, subprocess, time, urllib.request
+          root=pathlib.Path('artifacts/publish-${{ matrix.rid }}').resolve()
+          binary=root/('Timsah-Office.exe' if '${{ runner.os }}'=='Windows' else 'Timsah-Office')
+          proc=subprocess.Popen([str(binary),'--no-browser','--no-autostart','--port','5273','--data',str(pathlib.Path('artifacts/ci-profile').resolve())])
+          try:
+              for attempt in range(100):
+                  try:
+                      urllib.request.urlopen('http://127.0.0.1:5273/api/session',timeout=1);break
+                  except Exception:time.sleep(.2)
+              smoke_args=['python','scripts/smoke.py']
+              if '${{ github.ref_type }}'=='tag':smoke_args.append('--inference')
+              subprocess.run(smoke_args,check=True)
+          finally:
+              proc.terminate()
+              proc.wait(timeout=30)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Timsah-Office-${{ matrix.rid }}
+          path: |
+            artifacts/Timsah-Office-*.zip
+            artifacts/Timsah-Office-*.tar.gz
+            artifacts/Timsah-Office-*.sha256
+            artifacts/smoke-results.json
+            artifacts/tests/*.trx
+          if-no-files-found: error
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Timsah-Office-*
+          path: artifacts
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/Timsah-Office-*.zip artifacts/Timsah-Office-*.tar.gz artifacts/Timsah-Office-*.sha256 --title "Timsah-Office $GITHUB_REF_NAME" --notes-file .github/release-notes.md --verify-tag

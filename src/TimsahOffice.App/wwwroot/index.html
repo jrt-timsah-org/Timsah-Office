@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Timsah-Office</title>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/office.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <a class="brand" href="#"
+          ><span class="brand-mark">T</span
+          ><span
+            >Timsah<span class="brand-light">-Office</span
+            ><small>YOUR LOCAL WORKSPACE</small></span
+          ></a
+        >
+        <button id="new-page" class="primary wide">＋ 新しいページ</button>
+        <nav aria-label="ワークスペース">
+          <button class="nav-item active" data-view="notes">
+            <span>▤</span> ノート</button
+          ><button class="nav-item" data-view="assistant">
+            <span>✧</span> AIアシスタント</button
+          ><button class="nav-item" data-view="rules">
+            <span>▧</span> CoREルール
+          </button>
+        </nav>
+        <div class="sidebar-label">
+          PAGES
+          <button
+            id="import-button"
+            title="Markdownを読み込む"
+            aria-label="Markdownを読み込む"
+          >
+            ↥
+          </button>
+        </div>
+        <input
+          id="page-filter"
+          placeholder="ページを検索…"
+          aria-label="ページを検索"
+          type="search"
+        />
+        <div id="page-tree" class="page-tree"></div>
+        <div class="sidebar-bottom">
+          <button class="nav-item" data-view="settings">⚙ モデルと設定</button>
+          <div id="engine-badge" class="engine-badge">
+            <span class="dot"></span><span>モデル停止中</span>
+          </div>
+          <small>ローカル保存 · オフラインで使えます</small>
+        </div>
+      </aside>
+      <div id="workspace">
+        <header>
+          <button
+            id="sidebar-toggle"
+            class="icon-button"
+            aria-label="サイドバーの表示切替"
+          >
+            ☰</button
+          ><span id="breadcrumb">ノート</span>
+          <div class="header-right">
+            <span id="save-state">保存済み</span
+            ><button id="ai-toggle" class="subtle">✧ AIに相談</button>
+          </div>
+        </header>
+        <main>
+          <section id="view-notes" class="view active">
+            <div id="note-empty" class="empty">
+              <span class="big-symbol">▤</span>
+              <h1>アイデアを、次の一歩に。</h1>
+              <p>
+                競技の計画も、気づきも、チームのメモも。<br />自分のPCに残しながら、AIと一緒に整理できます。
+              </p>
+              <button id="first-page" class="primary">
+                最初のページを作る
+              </button>
+              <div class="feature-tags">
+                <span>Markdown</span><span>階層ページ</span
+                ><span>CoRE-2の出典</span>
+              </div>
+            </div>
+            <article id="note-document" hidden>
+              <div class="doc-meta">
+                <span>▤ NOTE</span>
+                <div>
+                  <button
+                    id="favorite"
+                    class="icon-button"
+                    aria-label="お気に入り"
+                  >
+                    ☆</button
+                  ><button id="child-page" class="subtle">＋ 子ページ</button
+                  ><button id="export-note" class="subtle">↧ 書き出す</button
+                  ><button
+                    id="note-options"
+                    class="icon-button"
+                    aria-label="ページ設定"
+                  >
+                    ⋯
+                  </button>
+                </div>
+              </div>
+              <input
+                id="note-title"
+                class="note-title"
+                placeholder="無題のページ"
+                aria-label="ページのタイトル"
+                maxlength="200"
+              />
+              <div class="note-info">
+                <span id="note-date"></span><span id="note-count"></span>
+              </div>
+              <div class="editor-toolbar" aria-label="編集ツール">
+                <button data-insert="heading">見出し</button
+                ><button data-insert="todo">☐ TODO</button
+                ><button data-insert="list">箇条書き</button
+                ><button data-insert="table">表</button
+                ><button data-insert="quote">引用</button><span></span
+                ><button id="preview-toggle">プレビュー</button>
+              </div>
+              <textarea
+                id="note-body"
+                placeholder="ここから書きはじめる…&#10;&#10;Markdownで見出し・表・チェックリストを作れます。&#10;文章を選択すると、その範囲をAIに渡せます。"
+                aria-label="メモの本文"
+                spellcheck="false"
+              ></textarea>
+              <div id="note-preview" class="markdown" hidden></div>
+            </article>
+          </section>
+          <section id="view-assistant" class="view">
+            <div class="intro">
+              <div class="eyebrow">LOCAL INTELLIGENCE</div>
+              <h1>Timsah-Assitant</h1>
+              <p>
+                公式ルールを調べる。メモを整理する。<br />手元の小さなAIが、考える時間を支えます。
+              </p>
+            </div>
+            <div class="quick-grid">
+              <button data-question="ロボットの大きさと重さの上限を教えて">
+                機体の規定<span>寸法・質量の確認 →</span></button
+              ><button data-question="スキルのクールダウンと例外を説明して">
+                スキルの仕組み<span>待機時間・補給の例外 →</span></button
+              ><button data-question="撃破から復活までの流れを教えて">
+                撃破と復活<span>HP・復活・無敵時間 →</span>
+              </button>
+            </div>
+            <div class="assistant-guide">
+              <h2>ノートと一緒に使う</h2>
+              <p>
+                ページを開いてAIパネルから「要約」「文章を整理」「TODO抽出」を選んでください。「ルール照合」では、メモと公式条文を並べて確認できます。
+              </p>
+              <p>
+                提案は確認後にページへ挿入できます。原文は保存時のバックアップにも残ります。
+              </p>
+            </div>
+          </section>
+          <section id="view-rules" class="view">
+            <div class="eyebrow">SOURCE LIBRARY</div>
+            <h1>CoREルールライブラリ</h1>
+            <p class="muted">
+              保存された公式条文をオフラインで検索できます。図・図面は原典で確認してください。
+            </p>
+            <form id="rule-search-form" class="search-row">
+              <input
+                id="rule-query"
+                placeholder="例：ピットイン、重量、5.6"
+                aria-label="ルールの検索"
+              /><select id="rule-source" aria-label="出典を絞り込む">
+                <option value="">すべての資料</option>
+                <option value="core2">CoRE-2</option>
+                <option value="common">共通</option>
+                <option value="system">競技システム</option></select
+              ><button class="primary">検索</button>
+            </form>
+            <div id="rule-results"></div>
+            <details>
+              <summary>すべての条文を見る</summary>
+              <div id="rule-directory"></div>
+            </details>
+          </section>
+          <section id="view-settings" class="view">
+            <div class="eyebrow">WORKSPACE SETTINGS</div>
+            <h1>モデルと設定</h1>
+            <p class="muted">
+              推論はこのPCで実行します。取得とルール更新にはインターネット接続が必要です。
+            </p>
+            <div class="settings-card">
+              <h2>ローカルモデル</h2>
+              <form id="settings-form">
+                <label>モデル<select id="model-select"></select></label
+                ><label
+                  >カスタムGGUFの絶対パス <small>空欄なら選択モデルを使用</small
+                  ><input
+                    id="custom-model"
+                    placeholder="例：C:\Models\model.gguf"
+                /></label>
+                <div class="settings-grid">
+                  <label
+                    >CPUスレッド数<input
+                      id="threads"
+                      type="number"
+                      min="1"
+                      max="128"
+                      required /></label
+                  ><label
+                    >コンテキスト長<select id="context-size">
+                      <option>2048</option>
+                      <option>4096</option>
+                      <option>8192</option>
+                      <option>16384</option>
+                    </select></label
+                  ><label
+                    >最大出力トークン<input
+                      id="max-tokens"
+                      type="number"
+                      min="64"
+                      max="2048"
+                      required
+                  /></label>
+                </div>
+                <label
+                  >自動アンロードまでの待機時間<select id="idle-unload">
+                    <option value="0">無効（常駐）</option>
+                    <option value="1">1分</option>
+                    <option value="5">5分</option>
+                    <option value="15">15分</option>
+                    <option value="30">30分</option>
+                    <option value="60">60分</option>
+                    <option value="120">120分</option>
+                    <option value="240">240分</option>
+                  </select></label
+                >
+                <p class="hint">
+                  回答中は保持し、待機後にRAMを解放します。次の依頼で自動的に再ロードします。
+                </p>
+                <label class="check-label"
+                  ><input id="direct-ram" type="checkbox" />
+                  モデルをRAMへ直接ロードする</label
+                >
+                <p class="hint">
+                  RAM直接ロードが既定です。オフにするとメモリマップを使用します。GPUは使いません。設定変更はモデル停止後に反映できます。
+                </p>
+                <button class="primary" id="save-settings">設定を保存</button>
+              </form>
+              <div class="action-row">
+                <button id="install-model">↓ モデルを取得</button
+                ><button id="start-model">▶ 起動</button
+                ><button id="stop-model">■ 停止</button
+                ><button id="cancel-job" hidden>処理を中断</button>
+              </div>
+              <div id="job-info" role="status"></div>
+              <progress id="job-progress" hidden></progress>
+              <div id="engine-info" class="hint"></div>
+            </div>
+            <div class="settings-card">
+              <div class="card-title">
+                <h2>公式資料と更新</h2>
+                <button id="update-rules">↻ 更新を確認・取得</button>
+              </div>
+              <p class="hint">
+                CoRE-2はルールナビを優先。共通・競技システムは公式GitHubの同じコミットから取得します。全資料の検証が成功した場合に切り替わります。
+              </p>
+              <div id="source-list"></div>
+            </div>
+            <div class="settings-card">
+              <h2>データとアプリ</h2>
+              <p class="hint">保存先: <code id="data-path"></code></p>
+              <p class="hint">
+                メモ: notes.json ／直前のバックアップ: notes.json.bak<br />初回取得後はメモ・検索・推論をオフラインで利用できます。
+              </p>
+              <button id="export-workspace">↧ 全ページをJSONで保存</button
+              ><button id="shutdown" class="danger">アプリを終了</button>
+            </div>
+          </section>
+        </main>
+      </div>
+      <aside id="ai-panel">
+        <div class="ai-head">
+          <div>
+            <span class="spark">✧</span><strong>Timsah-Assitant</strong
+            ><small id="ai-status">モデル停止中</small>
+          </div>
+          <button
+            id="close-ai"
+            class="icon-button"
+            aria-label="AIパネルを閉じる"
+          >
+            ×
+          </button>
+        </div>
+        <div class="ai-context">
+          <select id="chat-mode" aria-label="相談のモード">
+            <option value="rules">CoREルールを調べる</option>
+            <option value="chat">メモ・自由な相談</option></select
+          ><label class="check-label"
+            ><input type="checkbox" id="include-note" /> 開いているメモを参照
+            <span id="selection-badge"></span
+          ></label>
+          <div class="assist-actions">
+            <button data-assist="summarize">要約</button
+            ><button data-assist="rewrite">文章を整理</button
+            ><button data-assist="todos">TODO抽出</button
+            ><button data-assist="review">ルール照合</button>
+          </div>
+        </div>
+        <div id="chat-log" aria-live="polite">
+          <div class="chat-welcome">
+            <span>✧</span>
+            <h3>何からはじめますか？</h3>
+            <p>
+              ルールは出典と一緒に。<br />メモは自分の言葉を大切に。<br />考えを整理するお手伝いをします。
+            </p>
+          </div>
+        </div>
+        <div class="chat-footer">
+          <form id="chat-form">
+            <textarea
+              id="chat-input"
+              placeholder="質問や依頼を入力…"
+              aria-label="AIへの質問"
+              maxlength="4000"
+              rows="3"
+            ></textarea>
+            <div>
+              <button id="clear-chat" type="button" class="subtle">
+                会話をクリア</button
+              ><button id="abort-chat" type="button" hidden>■ 中断</button
+              ><button id="send-chat" class="primary">送信 ↑</button>
+            </div>
+          </form>
+          <p id="chat-hint">AIの回答と出典を照合して確認できます。</p>
+        </div>
+      </aside>
+    </div>
+    <div id="toast" role="status" hidden></div>
+    <dialog id="page-dialog">
+      <form method="dialog">
+        <h2>ページ設定</h2>
+        <label>親ページ<select id="parent-select"></select></label>
+        <div class="action-row">
+          <button id="move-page" type="button" class="primary">
+            移動を保存</button
+          ><button id="delete-page" type="button" class="danger">削除</button
+          ><button>閉じる</button>
+        </div>
+        <p class="hint">
+          子ページがあるページは削除できません。先に移動してください。
+        </p>
+      </form>
+    </dialog>
+    <input id="import-file" type="file" accept=".md,.markdown,.txt" hidden />
+    <script src="/vendor/marked.umd.js"></script>
+    <script src="/vendor/purify.min.js"></script>
+    <script src="/office.js"></script>
+  </body>
+</html>

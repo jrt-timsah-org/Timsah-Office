@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\TimsahOffice.Core\TimsahOffice.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <AssemblyName>Timsah-Office</AssemblyName>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="../../config/catalog.json" Link="config/catalog.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../data/rules/snapshot.json" Link="data/rules/snapshot.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Condition="Exists('../../data/rules/snapshot.json')" />
+  </ItemGroup>
+</Project>

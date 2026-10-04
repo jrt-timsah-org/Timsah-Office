@@ -1,0 +1,72 @@
+{
+  "engineVersion": "b11382",
+  "engines": {
+    "linux-x64": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11382/llama-b11382-bin-ubuntu-x64.tar.gz",
+      "sha256": "34407d59947ed4ab35fe4ab2db5f61bb4d5aedfe25e6a72f702f3ae9758a396d",
+      "size": 17669957
+    },
+    "linux-arm64": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11382/llama-b11382-bin-ubuntu-arm64.tar.gz",
+      "sha256": "f4ac1827e58e3df1c7f4657acc03352be4f8ad85b8abddc23741cd7bb3730cee",
+      "size": 13703641
+    },
+    "win-x64": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11382/llama-b11382-bin-win-cpu-x64.zip",
+      "sha256": "40d55282382909be50d27a3e182885860c28ff148e4d952beca7aaad91504051",
+      "size": 19366882
+    },
+    "osx-arm64": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11382/llama-b11382-bin-macos-arm64.tar.gz",
+      "sha256": "c2540b6515cf508c270815b494ff3f228818165fe7dcdac73f643e4f10bde2e6",
+      "size": 11925743
+    },
+    "osx-x64": {
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11382/llama-b11382-bin-macos-x64.tar.gz",
+      "sha256": "37355fefe4fd208172746872e173f10e19d945ac35da01a209d9518e6ba39c13",
+      "size": 11477182
+    }
+  },
+  "models": [
+    {
+      "id": "qwen3-0.6b",
+      "name": "Qwen3 0.6B · Q4_K_M",
+      "fileName": "Qwen3-0.6B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/50968a4468ef4233ed78cd7c3de230dd1d61a56b/Qwen3-0.6B-Q4_K_M.gguf",
+      "sha256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "size": 396705472,
+      "license": "Apache-2.0",
+      "source": "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF"
+    },
+    {
+      "id": "qwen3-1.7b",
+      "name": "Qwen3 1.7B · Q4_K_M",
+      "fileName": "Qwen3-1.7B-Q4_K_M.gguf",
+      "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/d7f544eead698dbd1f15126ef60b45a1e1933222/Qwen3-1.7B-Q4_K_M.gguf",
+      "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897",
+      "size": 1107409472,
+      "license": "Apache-2.0",
+      "source": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF"
+    },
+    {
+      "id": "gemma4-e2b",
+      "name": "Gemma 4 E2B · Q4_K_M",
+      "fileName": "gemma-4-E2B-it-Q4_K_M.gguf",
+      "url": "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/0314792d7f1f7e229411f620751375812bb9faf2/gemma-4-E2B-it-Q4_K_M.gguf",
+      "sha256": "740185b21d22ceb83a11c3aa62ad5842ef32c70f6096d756bbee85a1e4ec34b8",
+      "size": 3106738272,
+      "license": "Apache-2.0",
+      "source": "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF"
+    },
+    {
+      "id": "gemma4-e4b",
+      "name": "Gemma 4 E4B · Q4_K_M",
+      "fileName": "gemma-4-E4B-it-Q4_K_M.gguf",
+      "url": "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/bfc15c382204943c3a8fff0c750b94ae2364d7a3/gemma-4-E4B-it-Q4_K_M.gguf",
+      "sha256": "85a896a047553e842f25297ee5b031d64ff30147d9c4af17b1e4b394cd1fab87",
+      "size": 4977171584,
+      "license": "Apache-2.0",
+      "source": "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF"
+    }
+  ]
+}

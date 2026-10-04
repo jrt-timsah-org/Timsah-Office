@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TimsahOffice.App/TimsahOffice.App.csproj" />
+    <Project Path="src/TimsahOffice.Core/TimsahOffice.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TimsahOffice.Tests/TimsahOffice.Tests.csproj" />
+  </Folder>
+</Solution>
